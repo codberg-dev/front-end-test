@@ -4,16 +4,17 @@ import styled from 'styled-components'
 const StyledButton = styled.button`
   width: 100%; padding: 10px;
   border-radius: 5px;
-  background-color: ${(props)=>(props.bgc || "#eb7a7a")};
+  background-color: ${(props)=>(props.backgroundColor || "#eb7a7a")};
+  /* background-color: ${(props)=>(props.theme.colors.inputFocus)}; */
   border: none;
-  color: #fff;
+  color: ${(props)=>(props.theme.colors.white)};
   cursor: pointer;
 `
 
-function Button({handleLogin,bgc}) {
+function Button({handleLogin,backgroundColor}) {
   return (
     <>
-        <StyledButton bgc={bgc} onClick={handleLogin}>로그인</StyledButton>
+        <StyledButton backgroundColor={backgroundColor} onClick={handleLogin}>로그인</StyledButton>
     </>
   )
 }

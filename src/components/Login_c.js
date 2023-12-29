@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import styled from 'styled-components';
-import Button from './Button';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../store';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import Button from './Button';
+import { setCredentials } from '../store';
 
 const Container = styled.div`
   display: flex;
-  background-color: #f5f5f5;
+  background-color: ${(props)=>(props.theme.colors.bgColor)};
   justify-content: center;
   height: 100vh;
   align-items: center;
@@ -19,7 +19,7 @@ const SignUp = styled.div`
   width: 35vw;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  background-color: #fff;
+  background-color: ${(props)=>(props.theme.colors.white)};
   border-radius: 10px;
   @media screen and (max-width: 640px){
     width: 70vw;
@@ -37,13 +37,13 @@ const Title = styled.h1`
 const Input = styled.input`
   width: 100%; padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid ${(props)=>(props.theme.colors.inputBorder)};
   border-radius: 5px;
   box-sizing: border-box;
   padding-left: 45px;
   transition: border-color 0.4s;
   &:focus{
-    border-color: #ee9191;
+    border-color: ${(props)=>(props.theme.colors.inputFocus)};
     outline: none;
   }
   &::placeholder{opacity: 0;}
@@ -52,35 +52,20 @@ const Input = styled.input`
 const InputWrapper = styled.div`
   position: relative;
   margin-bottom: 20px;
-  &:last-child{
-    margin-bottom: 0; margin-top: 20px;
-    justify-content: flex-end; display: flex;
-    column-gap: 20px;
-    a{
-      background-color: #f1a7a7;
-      font-size: 14px;
-      text-align: center;
-      padding: 5px 20px;
-      border-radius: 5px;
-      color: white;
-      &:last-child{
-        background-color: #f18e8e;
-      }
-    }
-  }
+
   input:focus + label,
   input:not(:placeholder-shown) + label{
     top: 4px;
     left: 4px;
     font-size: 8px;
-    color:  #ee9191;
+    color:  ${(props)=>(props.theme.colors.inputFocus)};
   }
 `
 
 const Label = styled.label`
   position: absolute;
   top: 10px; left: 10px;
-  font-size: 14px; color: #999;
+  font-size: 14px; color: ${(props)=>(props.theme.colors.labelColor)};
   transition: all 0.3s;
   pointer-events: none;
 `
@@ -89,7 +74,7 @@ function Login() {
 
     const [id,setId] = useState('');
     const [pw,setPw] = useState('');
-    const [eye,setEye] = useState(false)
+    const [isPwVisible,setIsPwVisible] = useState(false)
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -110,25 +95,21 @@ function Login() {
         navigate('/test')
     }
 
-    const toggleEye = ()=>{
-      
-    }
-
-
     return (
     <>
         <Container>
             <SignUp>
                 <Title>로그인</Title>
-                <form onSubmit={handleLogin}>
+                <form>
                     <InputWrapper>
-                        <Input type="text" value={id} onChange={(e)=>{setId(e.target.value)}}/>
+                        <Input placeholder='아이디' type="text" value={id} onChange={(e)=>{setId(e.target.value)}}/>
                         <Label>아이디</Label>
                     </InputWrapper>
                     <InputWrapper>
-                        <Input type='password' value={pw} onChange={(e)=>{setPw(e.target.value)}}/>
+                        <Input placeholder='비밀번호' type={isPwVisible ? 'text' : 'password'} value={pw} onChange={(e)=>{setPw(e.target.value)}}/>
                         <Label>비밀번호</Label>
-                        <FontAwesomeIcon style={{position:'absolute',right:'10px',top:'10px'}} icon={faEye}/>
+                        <FontAwesomeIcon onClick={()=>{setIsPwVisible(!isPwVisible)}} style={{position:'absolute',right:'10px',top:'10px',cursor:'pointer'
+                      }} icon={isPwVisible ? faEye : faEyeSlash}/>
                     </InputWrapper>
                     <Button handleLogin={handleLogin} />
                 </form>

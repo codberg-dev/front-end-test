@@ -4,9 +4,9 @@ import { NavLink } from 'react-router-dom'
 function Main() {
   return (
     <>
-     <NavLink to={'/login'}>
+      <NavLink to={'/login'}>
         <p>로그인</p>
-    </NavLink>
+      </NavLink>
     </>
   )
 }
