@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from '../features/store';
 
+import { colors } from '../colors';
+
 const LoginWrapper = styled.div`
-    
     display: flex; justify-content: center;
     margin-top: 20px;
-
 `;
 
 const StyledForm = styled.form`
@@ -34,41 +34,34 @@ const StyledForm = styled.form`
 
 export default function Login() {
 
-    const [ID, setID] = useState('')
-    const [PW, setPW] = useState('')
+    const [id, setID] = useState('')
+    const [pw, setPW] = useState('')
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     console.log(`ID : ${ID}, PW : ${PW}`)
-    // }, [ID, PW])
+    const handleLogin = (e) => {
+        // e.preventDefault()
 
+        console.log(`ID : ${id}, PW : ${pw}`)
 
-  const submitClick = () => {
-    console.log(`ID : ${ID}, PW : ${PW}`)
-  }
-
-  const submitCheck = (e) => {
-    // e.preventDefault()
-
-    if (ID === '') {
-        alert('아이디를 입력하세요.')
-    } else if (PW === '') {
-        alert('비밀번호를 입력하세요.')
-    } else {
-        dispatch( setUserInfo({ID: ID, PW: PW}) );
-        alert('Welcome..!!')
-        navigate('/welcome')
+        if (id === '') {
+            alert('아이디를 입력하세요.')
+        } else if (pw === '') {
+            alert('비밀번호를 입력하세요.')
+        } else {
+            dispatch( setUserInfo({ID: id, PW: pw}) );
+            alert('Welcome..!!')
+            navigate('/welcome')
+        }
     }
-  }
 
   return (
     <div className='login-container'>
 
         <LoginWrapper>
 
-            <StyledForm onSubmit={submitCheck}>
+            <StyledForm onSubmit={handleLogin}>
 
                 <label htmlFor="id">아이디</label>
                 <input type="text" id="id" name="id" onChange={(e) => setID(e.target.value)}></input>
@@ -76,7 +69,9 @@ export default function Login() {
                 <label htmlFor="pw">비밀번호</label>
                 <input type="password" id="pw" name="pw" onChange={(e) => setPW(e.target.value)}></input>
 
-                <SubmitBtn type='submit' $backgroundColor='red' $clickEvent={submitClick}>로그인</SubmitBtn>
+                <SubmitBtn
+                    backgroundColor={colors.blue}
+                >로그인</SubmitBtn>
                 
             </StyledForm>
 

@@ -6,13 +6,13 @@ const SubmitButton = styled.button`
     padding: 10px 20px; border-radius: 5px;
     border: none; cursor: pointer;
     color: white; font-weight: bold; font-size: 18px;
-    background-color: ${props => props.$backgroundColor || '#86A789'}
+    background-color: ${props => props.backgroundColor || '#86A789'}
   `;
 
-function SubmitBtn({$backgroundColor, $clickEvent}) {
+function SubmitBtn({backgroundColor}) {
 
   return (
-    <SubmitButton type='submit' $backgroundColor={$backgroundColor} onClick={$clickEvent}>로그인</SubmitButton>
+    <SubmitButton type='submit' backgroundColor={backgroundColor}>로그인</SubmitButton>
   )
 }
 
