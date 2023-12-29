@@ -4,9 +4,13 @@ import styled, { ThemeProvider } from 'styled-components'
 
 import Login from './views/Login'
 import Welcome from './views/Welcome'
+import Album from './views/Album'
 
 import { lightMode, darkMode } from './colors/theme'
 
+const RootWrapper = styled.div`
+  display: flex; justify-content: center;
+`
 const ThemeSetter = styled.div`
   cursor: pointer; padding: 10px;
   position: absolute; top: 10px; right: 10px;
@@ -21,7 +25,7 @@ function App() {
 
     <ThemeProvider theme={nowTheme === 'light' ? lightMode : darkMode}>
       <div className="root">
-        <div className='root-wrapper'>
+        <RootWrapper>
 
           <ThemeSetter onClick={() => {
             nowTheme === 'light' && setTheme('dark')
@@ -34,9 +38,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />}></Route>
             <Route path="/welcome" element={<Welcome />}></Route>
+            <Route path="/album" element={<Album />}></Route>
           </Routes>
 
-        </div>
+        </RootWrapper>
 
       </div>
     </ThemeProvider>
