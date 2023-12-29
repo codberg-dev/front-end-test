@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from '../features/store';
 
-import { colors } from '../colors';
-
 const LoginWrapper = styled.div`
     display: flex; justify-content: center;
     margin-top: 20px;
@@ -17,11 +15,11 @@ const LoginWrapper = styled.div`
 
 const StyledForm = styled.form`
     width: 400px;
-    background-color: #D2E3C8;
+    background-color: ${props => props.theme.green};
     border-radius: 10px;
     padding: 20px;
     & > label{
-        color: black;
+        color: ${props => props.theme.text};
         display: block; margin-bottom: 5px;
     }
     & > input {
@@ -50,8 +48,8 @@ export default function Login() {
         } else if (pw === '') {
             alert('비밀번호를 입력하세요.')
         } else {
-            dispatch( setUserInfo({ID: id, PW: pw}) );
-            alert('Welcome..!!')
+            dispatch( setUserInfo({id: id, pw: pw}) );
+            // alert('Welcome..!!')
             navigate('/welcome')
         }
     }
@@ -70,7 +68,7 @@ export default function Login() {
                 <input type="password" id="pw" name="pw" onChange={(e) => setPW(e.target.value)}></input>
 
                 <SubmitBtn
-                    backgroundColor={colors.blue}
+                    backgroundColor={props => props.theme.blue}
                 >로그인</SubmitBtn>
                 
             </StyledForm>

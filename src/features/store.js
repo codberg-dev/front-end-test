@@ -7,11 +7,11 @@ const userInfoState = createSlice({
     },
     reducers: {
         setUserInfo(state, action) {
-            const ID = action.payload.ID
-            const PW = action.payload.PW
+            const id = action.payload.id
+            const pw = action.payload.pw
 
-            state.userID = ID
-            state.userPW = PW
+            state.userID = id
+            state.userPW = pw
         }
     }
 })
