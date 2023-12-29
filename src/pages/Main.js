@@ -7,6 +7,9 @@ function Main() {
       <NavLink to={'/login'}>
         <p>로그인</p>
       </NavLink>
+      <NavLink to={'/music'}>
+        <p>새앨범리스트</p>
+      </NavLink>
     </>
   )
 }
