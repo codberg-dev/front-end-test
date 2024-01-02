@@ -29,13 +29,59 @@ const Select = styled.div`
     }
 `
 
+const Content = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    ul{
+        flex-basis: 24%;
+        padding-bottom: 20px;
+        @media (max-width: 767px) {
+            flex-basis: 100%;
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            flex-basis: 49%;
+        }
+        img{
+            width: 100%;
+        }
+    }
+`
+
+const PaginationWrap = styled.div`
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+`
+
+const Pagination = styled.button`
+    background-color: ${(props) => (props.$active ? '#c3c3c3' : '#fff')};
+    color: ${(props) => (props.$active ? '#fff' : '#000')};
+    padding: 4px 9px;
+    border-radius: 30px;
+    border: 1px solid ${(props)=>(props.$active ? '#c3c3c3' : '#fff')};
+    cursor: pointer;
+`
+
 function AlbumList() {
 
     const [newReleases,setNewReleases] = useState([]);
     const [selectCountry, setSelectCountry] = useState('KR');
     const [isLoading,setIsLoading] = useState(false);
     const [errorMsg,setErrorMsg] = useState('');
-        
+
+    const [page,setPage] = useState(1); //현재 보여지는 페이지 숫자 , 처음은 1페이지
+    const totalCnt = 100 //총 개시물 개수
+    const pageRange = 8; //페이지당 보여줄 게시물 수
+    const btnRange = 5; //보여질 페이지 버튼의 개수 btnRange
+    const offset = (page - 1) * pageRange;
+
+    const startPage = Math.floor((page - 1)/btnRange) * btnRange + 1; //현재 보여질 버튼의 첫번째 수
+    const lastPage = Math.ceil(totalCnt / pageRange);
+    const endPage = Math.min(lastPage,startPage + btnRange - 1)
+    // Math.min 두 값중 더 작은 값을 endPage로 설정
+    
     useEffect(() => {
 
         const getNewRelease = async () => {
@@ -53,7 +99,7 @@ function AlbumList() {
         
                 const { access_token } = authResponse.data;
         
-                const res = await axios.get(`https://api.spotify.com/v1/browse/new-releases?country=${selectCountry}&offset=0&limit=20`, {
+                const res = await axios.get(`https://api.spotify.com/v1/browse/new-releases?country=${selectCountry}&offset=${offset}&limit=${pageRange}`, {
                     headers: {
                         'Authorization': `Bearer ${access_token}`
                     }
@@ -69,7 +115,16 @@ function AlbumList() {
         };
       
         getNewRelease();
-      }, [selectCountry]);
+
+      }, [selectCountry,page]);
+
+      const prevPage = () => {
+        setPage(page - 1)
+      }
+
+      const nextPage = () => {
+        setPage(page + 1)
+      }
 
     return (
         <>
@@ -89,31 +144,49 @@ function AlbumList() {
                         : 
                         errorMsg ? <p>{errorMsg}</p>
                         :
-                        <>
-                            <ul>
-                                {
-                                    newReleases.map((e,i)=>{
+                        <Content>
+                            {
+                                newReleases.map((e,i)=>{
 
-                                        const imageUrl = e.images[0] && e.images[0].url;
-                                        // const imageHeight = e.images[0] && e.images[0].height;
-                                        // const imageWidth = e.images[0] && e.images[0].width;
+                                    const imageUrl = e.images[0] && e.images[0].url;
+                                    // const imageHeight = e.images[0] && e.images[0].height;
+                                    // const imageWidth = e.images[0] && e.images[0].width;
 
-                                        return(
-                                            // <li key={e.id}>
-                                            <React.Fragment key={i}>
-                                                <li>
-                                                    <img src={imageUrl} height={200} width={200} alt={e.name} />
-                                                </li>
-                                                <li>
-                                                    {e.name}
-                                                </li>
-                                            </React.Fragment>
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </>
+                                    return(
+                                        // <li key={e.id}>
+                                        <ul key={i}>
+                                            <li>
+                                                <img src={imageUrl} alt={e.name} />
+                                                <p>제목 : {e.name}</p>
+                                                <p>가수 : {e.artists[0].name}</p>
+                                            </li>
+                                        </ul>
+                                    )
+                                })
+                            }
+                        </Content>
                     }
+
+                    {/* 페이지네이션 시작 */}
+                    <PaginationWrap>
+                        {
+                            page > 1 &&
+                            <Pagination onClick={prevPage}>&lt;</Pagination>
+                        }
+                        {
+                            Array(endPage - startPage + 1).fill(null).map((_,i)=>{
+                                const pageNum = startPage + i
+                                return(
+                                    <Pagination $active={page === pageNum} key={pageNum} onClick={()=>{setPage(pageNum)}}>{pageNum}</Pagination>
+                                )
+                            })
+                        }
+                        {
+                            page < lastPage &&
+                            <Pagination onClick={nextPage}>&gt;</Pagination>
+                        }
+                    </PaginationWrap>
+                    {/* 페이지네이션 끝 */}
                 </Wrapper>
             </Container>
         </>
