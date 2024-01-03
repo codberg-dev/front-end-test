@@ -9,6 +9,10 @@ import Album from './views/Album'
 import { lightMode, darkMode } from './colors/theme'
 
 const RootWrapper = styled.div`
+  background-color: ${props => props.theme.background};
+`
+
+const ContentWrapper = styled.div`
   display: flex; justify-content: center;
 `
 const ThemeSetter = styled.div`
@@ -24,8 +28,8 @@ function App() {
   return (
 
     <ThemeProvider theme={nowTheme === 'light' ? lightMode : darkMode}>
-      <div className="root">
-        <RootWrapper>
+      <RootWrapper>
+        <ContentWrapper>
 
           <ThemeSetter onClick={() => {
             nowTheme === 'light' && setTheme('dark')
@@ -41,9 +45,9 @@ function App() {
             <Route path="/album" element={<Album />}></Route>
           </Routes>
 
-        </RootWrapper>
+        </ContentWrapper>
 
-      </div>
+      </RootWrapper>
     </ThemeProvider>
 
   );

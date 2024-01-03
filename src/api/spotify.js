@@ -19,7 +19,7 @@ export async function fetchSpotifyAPI(url, method) {
     })
 
     const tokenJson = await getToken.json()
-    const token = tokenJson.access_token
+    const token = tokenJson.access_token;
 
     // 구한 토큰으로 본격적으로 fetch
 
